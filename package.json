@@ -1,0 +1,40 @@
+{
+  "name": "@yyyyu/react-native-geetest-sensebot",
+  "author": "yyyyu <g592842897@gmail.com>",
+  "version": "1.0.0",
+  "keywords": [
+    "react-native",
+    "geetest"
+  ],
+  "description": "react native for geetest sensebot.",
+  "license": "MIT",
+  "homepage": "https://github.com/yyyyu/react-native-geetest-sensebot",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:yyyyu/react-native-geetest-sensebot.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node scripts/postinstall"
+  },
+  "rnpm": {
+    "commands": {
+      "postlink": "node node_modules/@yyyyu/react-native-geetest-sensebot/scripts/postlink"
+    }
+  },
+  "dependencies": {
+    "invariant": "^2.2.4"
+  },
+  "peerDependencies": {
+    "react-native": ">0.50.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "standard": "^11.0.1"
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "globals": ["fetch", "Request"]
+  }
+}
