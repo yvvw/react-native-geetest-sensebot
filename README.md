@@ -144,9 +144,9 @@ GeetestSensebot.captcha({
 关于 **api1RespHandler** 特别说明，由于行为验证需要将 api1 的结果数据传递到 sdk 组件中，所以需要规定一个格式才能流程正常进行下去，api1RespHandler 返回值格式必须为
 ```json
 {
-  success: number,
-  gt: string,
-  challenge: string
+  "success": number,
+  "gt": string,
+  "challenge": string
 }
 ```
 
