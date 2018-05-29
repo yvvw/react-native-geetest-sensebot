@@ -2,7 +2,7 @@ import {
   enableDebug,
   configApi,
   setMaskColor,
-  captcha
+  captcha,
 
   GSError
 } from './src/api'
