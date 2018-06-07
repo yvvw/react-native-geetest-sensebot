@@ -77,7 +77,7 @@ export const captcha = async argument => {
       credentials: 'include'
     })
     if (typeof api1ReqReplacer === 'function') {
-      api1Req = await api1ReqReplacer(api2Req)
+      api1Req = await api1ReqReplacer(api1Req)
       if (!(api1Req instanceof Request)) {
         throw Error('api1ReqReplacer return value not a valid request object')
       }
