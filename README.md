@@ -38,9 +38,7 @@ pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
 #### 额外配置
 
-**手动配置和非 Pods 管理依赖情况下**需要
-- 将 **node_modules/@yyyyu/react-native-geetest-sensebot/ios/SDK** 目录中 **GT3Captcha.framework** **GT3Captcha.bundle** 两个文件添加到主项目中
-- 将 **GT3Captcha.framework** 文件所在路径添加到 Build Settings 的 Framework Search Paths 中
+**手动配置和非 Pods 管理依赖情况下**需要将 **node_modules/@yyyyu/react-native-geetest-sensebot/ios/SDK/GT3Captcha.framework** 添加到 framework 依赖中
 
 ### android
 
@@ -96,7 +94,7 @@ react-native link @yyyyu/react-native-geetest-sensebot
     }
     ```
 
-2. android/app/build.gradle 配置构建工具版本需要 (buildToolsVersion >= 25)
+2. android/app/build.gradle 中修改构建工具版本大于 25 (buildToolsVersion >= 25)
 
 3. AndroidManifest.xml
     ```xml

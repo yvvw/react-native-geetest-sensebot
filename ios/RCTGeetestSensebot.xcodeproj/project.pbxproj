@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3643C27A20B64B8E00A0B890 /* GSColorHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3643C27920B64B8E00A0B890 /* GSColorHelper.m */; };
+		36AF50B120D2408400F82592 /* GT3Captcha.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 36AF50B020D2408400F82592 /* GT3Captcha.bundle */; };
 		B3E7B58A1CC2AC0600A0062D /* RCTGeetestSensebot.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RCTGeetestSensebot.m */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 		134814201AA4EA6300B7C361 /* libRCTGeetestSensebot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRCTGeetestSensebot.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3643C27820B64B2F00A0B890 /* GSColorHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSColorHelper.h; sourceTree = "<group>"; };
 		3643C27920B64B8E00A0B890 /* GSColorHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GSColorHelper.m; sourceTree = "<group>"; };
+		36AF50B020D2408400F82592 /* GT3Captcha.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GT3Captcha.bundle; path = SDK/GT3Captcha.bundle; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* RCTGeetestSensebot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTGeetestSensebot.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RCTGeetestSensebot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTGeetestSensebot.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -60,6 +62,14 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		36AF50AF20D2407800F82592 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				36AF50B020D2408400F82592 /* GT3Captcha.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		36CD983820B80C0500647AC8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +83,7 @@
 				B3E7B5881CC2AC0600A0062D /* RCTGeetestSensebot.h */,
 				B3E7B5891CC2AC0600A0062D /* RCTGeetestSensebot.m */,
 				3643C27620B64ADF00A0B890 /* Helper */,
+				36AF50AF20D2407800F82592 /* Resources */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				36CD983820B80C0500647AC8 /* Frameworks */,
 			);
@@ -88,6 +99,7 @@
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
 				58B511D91A9E6C8500147676 /* Copy Files */,
+				36AF50AD20D2404900F82592 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -128,6 +140,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		36AF50AD20D2404900F82592 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36AF50B120D2408400F82592 /* GT3Captcha.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		58B511D71A9E6C8500147676 /* Sources */ = {
@@ -230,12 +253,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SDK",
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../React/**",
-					"$(SRCROOT)/../../react-native/React/**",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RCTGeetestSensebot;
@@ -250,12 +268,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/SDK",
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../React/**",
-					"$(SRCROOT)/../../react-native/React/**",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RCTGeetestSensebot;

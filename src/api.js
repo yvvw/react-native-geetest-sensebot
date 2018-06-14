@@ -174,7 +174,6 @@ const stopCaptcha = () => {
   return GeetestSensebot.stopCaptcha()
 }
 
-
 /* event handle */
 const GSEmitter = new NativeEventEmitter(GeetestSensebot)
 
@@ -198,7 +197,6 @@ const rnGSEventListener = listenEventType => {
   })
 }
 /* event handle end */
-
 
 /* default captcha funcs */
 const defaultApi1RespHandler = async api1Resp => {
@@ -240,7 +238,6 @@ const defaultApi2RespHandler = async api2Resp => {
   }
 }
 /* default captcha funcs end */
-
 
 export class GSError extends Error {
   constructor ({ errCode, errMsg }) {

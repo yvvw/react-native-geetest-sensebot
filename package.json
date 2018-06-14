@@ -15,7 +15,6 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "node scripts/postinstall"
   },
   "rnpm": {
@@ -35,6 +34,9 @@
   },
   "standard": {
     "parser": "babel-eslint",
-    "globals": ["fetch", "Request"]
+    "globals": [
+      "fetch",
+      "Request"
+    ]
   }
 }

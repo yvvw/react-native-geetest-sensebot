@@ -7,7 +7,7 @@ export default params => {
     typeof params.gt === 'string' &&
     typeof params.challenge === 'string',
     'captcha params must be an object have \
-    success(Number) gt(String) challenge(String), but get %s',
+      success(Number) gt(String) challenge(String), but get %s',
     JSON.stringify(params)
   )
 }
