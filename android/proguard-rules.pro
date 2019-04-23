@@ -1,2 +1,2 @@
 -dontwarn com.geetest.sdk.**
--keep class com.geetest.sdk.** { *; }
+-keep class com.geetest.sdk.**{*;}

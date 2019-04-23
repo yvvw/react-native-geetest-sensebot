@@ -10,7 +10,7 @@
 #import "GT3Utils.h"
 #import "GT3Error.h"
 
-@protocol GT3CaptchaManagerDelegate, GT3CaptchaManagerViewDelegate, GT3CaptchaManagerStatisticDelegate;
+@protocol GT3CaptchaManagerDelegate, GT3CaptchaNetworkDelegate, GT3CaptchaManagerViewDelegate, GT3CaptchaManagerStatisticDelegate;
 
 @interface GT3CaptchaManager : NSObject
 
@@ -19,6 +19,8 @@
 
 /** 验证管理代理 */
 @property (nonatomic, weak) id<GT3CaptchaManagerDelegate> delegate;
+/** 验证网络代理 */
+@property (nonatomic, weak) id<GT3CaptchaNetworkDelegate> networkDelegate;
 /** 验证视图代理 */
 @property (nonatomic, weak) id<GT3CaptchaManagerViewDelegate> viewDelegate;
 /** 验证统计代理 */
@@ -190,9 +192,9 @@
  *  @discussion
  *  默认中文
  *
- *  @param Type 语言类型
+ *  @param type 语言类型
  */
-- (void)useLanguage:(GT3LanguageType)Type;
+- (void)useLanguage:(GT3LanguageType)type;
 
 /**
  *  @abstract 完全使用HTTPS协议请求验证
@@ -353,6 +355,13 @@
  *  @param manager 验证管理器
  */
 - (void)gtCaptchaUserDidCloseGTView:(GT3CaptchaManager *)manager;
+
+@end
+
+@protocol GT3CaptchaNetworkDelegate <NSObject>
+
+- (void)gtCaptcha:(GT3CaptchaManager *)manager didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * credential))completionHandler;
 
 @end
 

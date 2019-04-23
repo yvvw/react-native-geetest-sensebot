@@ -53,7 +53,7 @@
  *  Captcha Button `layer.borderColor`. Defaults 
  *  to 0xcccccc. Animatable.
  */
-@property (nonatomic, assign) CGColorRef borderColor;
+@property (nonatomic, strong) UIColor *borderColor;
 
 /**
  *  Captcha Button `layer.borderWidth` Defaults to

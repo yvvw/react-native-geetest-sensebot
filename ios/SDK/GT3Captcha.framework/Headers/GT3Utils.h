@@ -65,22 +65,34 @@ typedef NS_ENUM(NSInteger, GT3SecondaryCaptchaPolicy) {
  *  图形验证的语言选项
  */
 typedef NS_ENUM(NSInteger, GT3LanguageType) {
-    /** Simplified Chinese */
+    /** Simplified Chinese 简体中文 */
     GT3LANGTYPE_ZH_CN = 0,
-    /** Traditional Chinese */
+    /** Traditional Chinese 繁体中文 */
     GT3LANGTYPE_ZH_TW,
-    /** Traditional Chinese */
+    /** Traditional Chinese 繁体中文 */
     GT3LANGTYPE_ZH_HK,
-    /** Korean */
-    GT3LANGTYPE_KO_KR,// 暂不支持
-    /** Japenese */
+    /** Korean 韩语 */
+    GT3LANGTYPE_KO_KR,
+    /** Japenese 日语 */
     GT3LANGTYPE_JA_JP,
-    /** English */
-    GT3LANGTYPE_EN_US,
-    /** Indonesian */
+    /** English 英语 */
+    GT3LANGTYPE_EN,
+    /** Indonesian 印度尼西亚语 */
     GT3LANGTYPE_ID,
-    /** System language*/
-    GT3LANGTYPE_AUTO
+    /** Arabic 阿拉伯语 */
+    GT3LANGTYPE_AR,
+    /** German 德语 */
+    GT3LANGTYPE_DE,
+    /** Spanish 西班牙语 */
+    GT3LANGTYPE_ES,
+    /** French 法语 */
+    GT3LANGTYPE_FR,
+    /** Portuguese 葡萄牙语 */
+    GT3LANGTYPE_PT_PT,
+    /** Russian 俄语 */
+    GT3LANGTYPE_RU,
+    /** System language 跟随系统语言*/
+    GT3LANGTYPE_AUTO = 999
 };
 
 /**
