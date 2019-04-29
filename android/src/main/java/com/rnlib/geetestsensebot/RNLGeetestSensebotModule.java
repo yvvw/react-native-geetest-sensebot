@@ -3,6 +3,7 @@ package com.rnlib.geetestsensebot;
 import android.app.Activity;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -22,95 +23,55 @@ import org.json.JSONObject;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class RNLGeetestSensebotModule extends ReactContextBaseJavaModule {
-    private static final String NAME = "RNLGeetestSensebot";
-    private static final String EVENT_NAME = "RNLGeetestSensebotEvent";
+public class RNLGeetestSensebotModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
+    private static final String ModuleName = "RNLGeetestSensebot";
+    private static final String EventName = "RNLGeetestSensebotEvent";
 
     private final ReactApplicationContext mReactContext;
     private GT3GeetestUtils mGT3GeetestUtils;
+    private GT3ConfigBean mGT3ConfigBean;
 
     RNLGeetestSensebotModule(ReactApplicationContext reactContext) {
         super(reactContext);
         mReactContext = reactContext;
+        mReactContext.addLifecycleEventListener(this);
     }
 
     @Nonnull
     @Override
     public String getName() {
-        return NAME;
+        return ModuleName;
     }
 
     @ReactMethod
     public void start(final ReadableMap option) {
-        GT3ConfigBean mGT3ConfigBean = new GT3ConfigBean();
-        mGT3ConfigBean.setPattern(1); // 1 -> bind 自定义按钮
+        GT3ConfigBean gt3ConfigBean = getSharedGT3ConfigBean();
         try {
             // debug
             boolean debug = option.getBoolean("debug");
-            mGT3ConfigBean.setDebug(debug);
+            gt3ConfigBean.setDebug(debug);
             // view load timeout
             int timeout = option.getInt("loadTimeout");
-            mGT3ConfigBean.setTimeout(timeout);
+            gt3ConfigBean.setTimeout(timeout);
             // request timeout
             int webviewTimeout = option.getInt("reqTimeout");
-            mGT3ConfigBean.setWebviewTimeout(webviewTimeout);
+            gt3ConfigBean.setWebviewTimeout(webviewTimeout);
             // lang
             String lang = option.getString("lang");
             if (lang != null && !lang.equals("system")) {
-                mGT3ConfigBean.setLang(lang);
+                gt3ConfigBean.setLang(lang);
             }
             // enable background cancel
             boolean canceledOnTouchOutside = option.getBoolean("enableBackgroundCancel");
-            mGT3ConfigBean.setCanceledOnTouchOutside(canceledOnTouchOutside);
+            gt3ConfigBean.setCanceledOnTouchOutside(canceledOnTouchOutside);
             // api1 json result
-            mGT3ConfigBean.setApi1Json(new JSONObject(
+            gt3ConfigBean.setApi1Json(new JSONObject(
                     option.getString("api1Result")));
         } catch (Exception e) {
             sendEvent(Event.Error.getCode(),
                     Error.ParameterParseFailed.getCode(), e.getMessage());
             return;
         }
-
-        mGT3ConfigBean.setListener(new GT3Listener() {
-            @Override
-            public void onDialogResult(String s) {
-                super.onDialogResult(s);
-                sendEvent(Event.Result.getCode(), s);
-            }
-
-            @Override
-            public void onClosed(int i) {
-                sendEvent(Event.Closed.getCode());
-            }
-
-            @Override
-            public void onFailed(GT3ErrorBean gt3ErrorBean) {
-                WritableMap result = Arguments.createMap();
-                result.putString("errorCode", gt3ErrorBean.errorCode);
-                result.putString("errorDesc", gt3ErrorBean.errorDesc);
-                result.putDouble("duration", gt3ErrorBean.duration);
-                result.putString("challenge", gt3ErrorBean.challenge);
-                result.putString("type", gt3ErrorBean.type);
-                result.putString("sdkVersion", gt3ErrorBean.sdkVersion);
-                JSONObject json = new JSONObject(result.toHashMap());
-                sendEvent(Event.Failed.getCode(), json.toString());
-            }
-
-            @Override
-            public void onButtonClick() {
-
-            }
-
-            @Override
-            public void onSuccess(String s) {
-
-            }
-
-            @Override
-            public void onStatistics(String s) {
-
-            }
-        });
 
         Activity activity = mReactContext.getCurrentActivity();
         if (activity == null) {
@@ -119,45 +80,96 @@ public class RNLGeetestSensebotModule extends ReactContextBaseJavaModule {
             return;
         }
         mGT3GeetestUtils = new GT3GeetestUtils(activity);
-        mGT3GeetestUtils.init(mGT3ConfigBean);
-        mReactContext.addLifecycleEventListener(new LifecycleEventListener() {
-            @Override
-            public void onHostResume() {
+        mGT3GeetestUtils.init(gt3ConfigBean);
 
-            }
-
-            @Override
-            public void onHostPause() {
-
-            }
-
-            @Override
-            public void onHostDestroy() {
-                if (mGT3GeetestUtils != null) {
-                    mGT3GeetestUtils.destory();
-                }
-            }
-        });
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mGT3GeetestUtils != null) {
-                    mGT3GeetestUtils.startCustomFlow();
-                    mGT3GeetestUtils.getGeetest();
-                }
+                mGT3GeetestUtils.startCustomFlow();
+                mGT3GeetestUtils.getGeetest();
             }
         });
     }
 
     @ReactMethod
-    public void stop() {
+    public void stop(final Callback callback) {
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mGT3GeetestUtils.destory();
+                callback.invoke();
+            }
+        });
+        mReactContext.removeLifecycleEventListener(this);
+    }
+
+    private GT3ConfigBean getSharedGT3ConfigBean() {
+        if (mGT3ConfigBean == null) {
+            mGT3ConfigBean = new GT3ConfigBean();
+            mGT3ConfigBean.setPattern(1); // 1 -> bind 自定义按钮
+
+            mGT3ConfigBean.setListener(new GT3Listener() {
+                @Override
+                public void onDialogResult(String s) {
+                    super.onDialogResult(s);
+                    sendEvent(Event.Result.getCode(), s);
+                }
+
+                @Override
+                public void onClosed(int i) {
+                    sendEvent(Event.Closed.getCode());
+                }
+
+                @Override
+                public void onFailed(GT3ErrorBean gt3ErrorBean) {
+                    WritableMap result = Arguments.createMap();
+                    result.putString("errorCode", gt3ErrorBean.errorCode);
+                    result.putString("errorDesc", gt3ErrorBean.errorDesc);
+                    result.putDouble("duration", gt3ErrorBean.duration);
+                    result.putString("challenge", gt3ErrorBean.challenge);
+                    result.putString("type", gt3ErrorBean.type);
+                    result.putString("sdkVersion", gt3ErrorBean.sdkVersion);
+                    JSONObject json = new JSONObject(result.toHashMap());
+                    sendEvent(Event.Failed.getCode(), json.toString());
+                }
+
+                @Override
+                public void onButtonClick() {
+
+                }
+
+                @Override
+                public void onSuccess(String s) {
+
+                }
+
+                @Override
+                public void onStatistics(String s) {
+
+                }
+            });
+        }
+        return mGT3ConfigBean;
+    }
+
+    @Override
+    public void onHostResume() {
+
+    }
+
+    @Override
+    public void onHostPause() {
+
+    }
+
+    @Override
+    public void onHostDestroy() {
         if (mGT3GeetestUtils != null) {
             UiThreadUtil.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if (mGT3GeetestUtils != null) {
                         mGT3GeetestUtils.destory();
-                        mGT3GeetestUtils = null;
                     }
                 }
             });
@@ -188,7 +200,7 @@ public class RNLGeetestSensebotModule extends ReactContextBaseJavaModule {
         }
         mReactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(EVENT_NAME, event);
+                .emit(EventName, event);
     }
 
     private enum Event {

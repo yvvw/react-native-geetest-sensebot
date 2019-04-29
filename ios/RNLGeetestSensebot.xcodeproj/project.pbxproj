@@ -7,14 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		363F8FBF226ED46600C89882 /* GT3Captcha.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 363F8FBD226ED42100C89882 /* GT3Captcha.bundle */; };
+		363172872276D1CF0084C7FB /* GT3Captcha.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 363F8FBD226ED42100C89882 /* GT3Captcha.bundle */; };
+		363173142276ED120084C7FB /* GT3Captcha.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 363173132276ECDE0084C7FB /* GT3Captcha.framework */; };
 		B3E7B58A1CC2AC0600A0062D /* RNLGeetestSensebot.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNLGeetestSensebot.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		3631730F2276ECB60084C7FB /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = .;
+			dstSubfolderSpec = 16;
+			files = (
+				363173142276ED120084C7FB /* GT3Captcha.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNLGeetestSensebot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNLGeetestSensebot.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		363F8FBD226ED42100C89882 /* GT3Captcha.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GT3Captcha.bundle; sourceTree = "<group>"; };
-		363F8FBE226ED45600C89882 /* GT3Captcha.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GT3Captcha.framework; path = SDK/GT3Captcha.framework; sourceTree = "<group>"; };
+		363173132276ECDE0084C7FB /* GT3Captcha.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GT3Captcha.framework; path = SDK/GT3Captcha.framework; sourceTree = "<group>"; };
+		363F8FBD226ED42100C89882 /* GT3Captcha.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GT3Captcha.bundle; path = SDK/GT3Captcha.bundle; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* RNLGeetestSensebot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNLGeetestSensebot.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNLGeetestSensebot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNLGeetestSensebot.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -28,13 +43,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		363F8FBC226ED41C00C89882 /* SDK */ = {
+		363172862276D1350084C7FB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				363F8FBE226ED45600C89882 /* GT3Captcha.framework */,
 				363F8FBD226ED42100C89882 /* GT3Captcha.bundle */,
 			);
-			name = SDK;
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		363173122276ECD40084C7FB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				363173132276ECDE0084C7FB /* GT3Captcha.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		58B511D21A9E6C8500147676 = {
@@ -42,7 +64,8 @@
 			children = (
 				B3E7B5881CC2AC0600A0062D /* RNLGeetestSensebot.h */,
 				B3E7B5891CC2AC0600A0062D /* RNLGeetestSensebot.m */,
-				363F8FBC226ED41C00C89882 /* SDK */,
+				363172862276D1350084C7FB /* Resources */,
+				363173122276ECD40084C7FB /* Frameworks */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,6 +79,7 @@
 			buildPhases = (
 				58B511D71A9E6C8500147676 /* Sources */,
 				363F8F8C226ED25100C89882 /* Resources */,
+				3631730F2276ECB60084C7FB /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -103,7 +127,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				363F8FBF226ED46600C89882 /* GT3Captcha.bundle in Resources */,
+				363172872276D1CF0084C7FB /* GT3Captcha.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

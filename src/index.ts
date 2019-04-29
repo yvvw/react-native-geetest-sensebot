@@ -1,35 +1,74 @@
+import { EmitterSubscription, Platform } from "react-native";
 import * as RNGSModule from "./module";
 export { BackgroundBlurEffectIOS, Lang } from "./module";
-export var Errors;
-(function (Errors) {
+
+export interface IAPI1Result {
+    success: 0 | 1;
+    challenge: string;
+    gt: string;
+    new_captcha: boolean;
+    [key: string]: any;
+}
+
+export interface IOption {
+    // API1
+    api1Result: IAPI1Result;
+    // debug
+    debug?: boolean;
+    // view 加载超时时间，默认10000
+    loadTimeout?: number;
+    // 第二步向极验服务器发送请求超时时间，默认10000
+    reqTimeout?: number;
+    // 语言
+    lang?: RNGSModule.Lang;
+    // 点击背景是否可以取消验证
+    enableBackgroundCancel?: boolean;
+    // 背景色 IOS Only
+    backgroundColorIOS?: any;
+    // 背景模糊类型 IOS Only
+    backgroundBlurEffectIOS?: RNGSModule.BackgroundBlurEffectIOS;
+    // 事件监听
+    onEvent?: (code: Events, data?: Array<number | string>) => void;
+}
+
+export interface IResult {
+    geetest_challenge: string;
+    geetest_seccode: string;
+    geetest_validate: string;
+    [key: string]: any;
+}
+
+export enum Errors {
     // 参数解析错误
-    Errors[Errors["PARAMETER_PARSE_FAILED"] = -1] = "PARAMETER_PARSE_FAILED";
+    PARAMETER_PARSE_FAILED = -1,
     // 安卓 activity 已经销毁
-    Errors[Errors["ANDROID_ACTIVITY_DESTROYED"] = -2] = "ANDROID_ACTIVITY_DESTROYED";
+    ANDROID_ACTIVITY_DESTROYED = -2,
     // 重复运行
-    Errors[Errors["DUPLICATE_START"] = -3] = "DUPLICATE_START";
-})(Errors || (Errors = {}));
-export var Events;
-(function (Events) {
+    DUPLICATE_START = -3,
+}
+
+export enum Events {
     // 验证结果
-    Events[Events["RESULT"] = 1] = "RESULT";
+    RESULT = 1,
     // 验证窗口关闭
-    Events[Events["CLOSED"] = 2] = "CLOSED";
+    CLOSED = 2,
     // 验证失败
-    Events[Events["FAILED"] = 3] = "FAILED";
+    FAILED = 3,
     // 发生错误
-    Events[Events["ERROR"] = 0] = "ERROR";
-})(Events || (Events = {}));
-var InternalStatus;
-(function (InternalStatus) {
-    InternalStatus[InternalStatus["None"] = 0] = "None";
+    ERROR = 0,
+}
+
+enum InternalStatus {
+    None = 0b0,
     // 认证中
-    InternalStatus[InternalStatus["Running"] = 1] = "Running";
+    Running = 0b1,
     // 停止认证中
-    InternalStatus[InternalStatus["Stoping"] = 0] = "Stoping";
-})(InternalStatus || (InternalStatus = {}));
+    Stoping = 0b1 >> 1,
+}
+
 let internalStatus = InternalStatus.None;
-let eventListener = null;
+let eventListener: EmitterSubscription | null = null;
+
 const DEFAULT_OPTION = {
     api1Result: "",
     debug: false,
@@ -37,14 +76,16 @@ const DEFAULT_OPTION = {
     reqTimeout: 10000,
     lang: RNGSModule.Lang.System,
     enableBackgroundCancel: false,
-    backgroundColorIOS: 0,
+    backgroundColorIOS: 0, // processColor('transparent')
     backgroundBlurEffectIOS: RNGSModule.BackgroundBlurEffectIOS.None,
 };
+
 // 进行行为认证
-export function start(option) {
+export function start(option: IOption): Promise<IResult> {
     return new Promise((resolve, reject) => {
         if (internalStatus & InternalStatus.Running) {
-            return reject(new GeetestError(Errors.DUPLICATE_START, "Duplicate start"));
+            return reject(new GeetestError(
+                Errors.DUPLICATE_START, "Duplicate start"));
         }
         internalStatus |= InternalStatus.Running;
         eventListener = RNGSModule.addListener(([code, ...data]) => {
@@ -69,10 +110,9 @@ export function start(option) {
         RNGSModule.start(RNGSModule.parseOption(option, DEFAULT_OPTION));
     });
 }
+
 function stop() {
-    if (internalStatus & InternalStatus.Stoping) {
-        return;
-    }
+    if (internalStatus & InternalStatus.Stoping) { return; }
     internalStatus |= InternalStatus.Stoping;
     RNGSModule.stop(() => {
         internalStatus = InternalStatus.None;
@@ -82,11 +122,11 @@ function stop() {
         }
     });
 }
+
 export class GeetestError extends Error {
-    constructor(code, message) {
+    constructor(readonly code: number, readonly message: string) {
         super(message);
-        this.code = code;
-        this.message = message;
+
         // @ts-ignore
         if (Error.captureStackTrace) {
             // @ts-ignore

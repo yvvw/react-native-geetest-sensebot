@@ -1,31 +1,38 @@
 {
   "name": "@yyyyu/react-native-geetest-sensebot",
-  "author": "yyyyu <g592842897@gmail.com>",
-  "version": "2.0.0",
+  "version": "2.1.0",
+  "description": "geetest sensebot for react native.",
   "keywords": [
     "react-native",
     "geetest sensebot"
   ],
-  "description": "geetest sensebot for react native.",
-  "license": "MIT",
   "homepage": "https://github.com/yyyyu/react-native-geetest-sensebot",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:yyyyu/react-native-geetest-sensebot.git"
+  "bugs": {
+    "url": "https://github.com/yyyyu/react-native-geetest-sensebot/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "yyyyu",
+    "email": "g592842897@gmail.com"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yyyyu/react-native-geetest-sensebot.git"
+  },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "tslint --fix ./src/**/*.ts"
+  },
+  "dependencies": {
+    "@types/react-native": "^0.57.45"
+  },
+  "devDependencies": {
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.3"
   },
   "peerDependencies": {
     "react-native": "^0.59.5"
-  },
-  "devDependencies": {
-    "typescript": "^3.4.3"
-  },
-  "dependencies": {
-    "@types/invariant": "^2.2.29",
-    "@types/react-native": "^0.57.45"
   }
 }

@@ -1,18 +1,8 @@
-#if __has_include(<React/RCTConvert.h>)
-#import <React/RCTConvert.h>
-#else
-#import "RCTConvert.h"
-#endif
-#if __has_include(<React/RCTUtils.h>)
-#import <React/RCTUtils.h>
-#else
-#import "RCTUtils.h"
-#endif
 #import <GT3Captcha/GT3Captcha.h>
+#import <React/RCTConvert.h>
+#import <React/RCTUtils.h>
 
 #import "RNLGeetestSensebot.h"
-
-static NSString* EventName = @"RNLGeetestSensebotEvent";
 
 typedef NS_ENUM(NSUInteger, RNLGSEvent) {
     RNLGSResultEvent = 1,
@@ -42,18 +32,21 @@ static NSNumber* RNLGSGetErrorCode(RNLGSError event) {
 
 RCT_EXPORT_METHOD(start:(NSDictionary *)option)
 {
-    @try {
-        // view load timeout
-        NSTimeInterval timeout = [RCTConvert double:option[@"loadTimeout"]] / 1000.0;
-        // init manager
-        _manager = [[GT3CaptchaManager alloc] initWithAPI1:nil API2:nil timeout:timeout];
+    if (_manager == nil) {
+        _manager = [GT3CaptchaManager alloc];
         _manager.delegate = self;
         _manager.viewDelegate = self;
+    }
+    @try {
+        // view load timeout
+        NSTimeInterval timeout = [RCTConvert NSTimeInterval:option[@"loadTimeout"]];
+        // init manager
+        _manager = [_manager initWithAPI1:nil API2:nil timeout:timeout];
         // debug
         BOOL enableDebugMode = [RCTConvert BOOL:option[@"debug"]];
         [_manager enableDebugMode: enableDebugMode];
         // request timeout
-        NSTimeInterval gtViewTimeout = [RCTConvert double:option[@"reqTimeout"]] / 1000.0;
+        NSTimeInterval gtViewTimeout = [RCTConvert NSTimeInterval:option[@"reqTimeout"]];
         [_manager useGTViewWithTimeout:gtViewTimeout];
         // lang
         GT3LanguageType lang = [RNLGeetestSensebot parseLanguag:
@@ -80,9 +73,6 @@ RCT_EXPORT_METHOD(start:(NSDictionary *)option)
                        challenge:[api1JSON objectForKey:@"challenge"]
                          success:[api1JSON objectForKey:@"success"]
                         withAPI2:nil];
-        // registe and start validate
-        [_manager registerCaptcha:nil];
-        [_manager startGTCaptchaWithAnimated:YES];
     } @catch (NSException *e) {
         NSMutableString *errorMessage = [NSMutableString new];
         [errorMessage appendString:[e name]];
@@ -96,14 +86,20 @@ RCT_EXPORT_METHOD(start:(NSDictionary *)option)
                           RNLGSGetEventCode(RNLGSErrorEvent),
                           RNLGSGetErrorCode(RNLGSParameterParseError),
                           errorMessage]];
+        return;
     }
+    // registe and start validate
+    [_manager registerCaptcha:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_manager startGTCaptchaWithAnimated:YES];
+    });
 }
 
-RCT_EXPORT_METHOD(stop)
+RCT_EXPORT_METHOD(stop:(RCTResponseSenderBlock)callback)
 {
     if (_manager != nil) {
         [_manager stopGTCaptcha];
-        _manager = nil;
+        callback(nil);
     }
 }
 
@@ -155,18 +151,18 @@ RCT_EXPORT_METHOD(stop)
 
 - (void)gtCaptcha:(GT3CaptchaManager *)manager didReceiveCaptchaCode:(NSString *)code result:(NSDictionary *)result message:(NSString *)message
 {
-    if ([code isEqualToString:@"0"]) {
-        [self sendEvent:@[RNLGSGetEventCode(RNLGSFailedEvent),
-                          RCTJSONStringify(result, nil)]];
-    } else if ([code isEqualToString:@"1"]) {
+    if ([code isEqualToString:@"1"]) {
         [self sendEvent:@[RNLGSGetEventCode(RNLGSResultEvent),
+                          RCTJSONStringify(result, nil)]];
+    } else if ([code isEqualToString:@"0"] && [result count] > 1) {
+        // code == 0 代表失败, 用户滑动不准确时也会触发这个条件, 过滤 dict 里面字段数量为 1 时的信息
+        [self sendEvent:@[RNLGSGetEventCode(RNLGSFailedEvent),
                           RCTJSONStringify(result, nil)]];
     }
 }
 
 - (void)gtCaptcha:(GT3CaptchaManager *)manager didReceiveSecondaryCaptchaData:(NSData *)data response:(NSURLResponse *)response error:(GT3Error *)error decisionHandler:(void (^)(GT3SecondaryCaptchaPolicy))decisionHandler
 {
-
 }
 
 - (void)gtCaptchaUserDidCloseGTView:(GT3CaptchaManager *)manager
@@ -186,6 +182,15 @@ RCT_EXPORT_METHOD(stop)
 
 #pragma react native bridge
 
+RCT_EXPORT_MODULE(RNLGeetestSensebot)
+
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
+}
+
+static NSString* EventName = @"RNLGeetestSensebotEvent";
+
 - (NSArray<NSString *> *)supportedEvents
 {
     return @[EventName];
@@ -194,18 +199,6 @@ RCT_EXPORT_METHOD(stop)
 - (void)sendEvent:(id)body
 {
     [self sendEventWithName:EventName body:body];
-}
-
-RCT_EXPORT_MODULE()
-
-+ (BOOL)requiresMainQueueSetup
-{
-    return YES;
-}
-
-- (dispatch_queue_t)methodQueue
-{
-    return dispatch_get_main_queue();
 }
 
 @end
