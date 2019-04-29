@@ -24,14 +24,16 @@
   "scripts": {
     "commit": "npx git-cz",
     "lint": "tslint --fix ./src/**/*.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "@types/react-native": "^0.57.45"
   },
   "devDependencies": {
     "tslint": "^5.16.0",
-    "typescript": "^3.4.3"
+    "typescript": "^3.4.3",
+    "semantic-release": "^15.13.3"
   },
   "peerDependencies": {
     "react-native": "^0.59.5"
