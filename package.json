@@ -22,17 +22,16 @@
     "url": "https://github.com/yyyyu/react-native-geetest-sensebot.git"
   },
   "scripts": {
+    "commit": "npx git-cz",
     "lint": "tslint --fix ./src/**/*.ts",
-    "build": "tsc",
-    "semantic-release": "semantic-release --no-ci"
+    "build": "tsc"
   },
   "dependencies": {
     "@types/react-native": "^0.57.45"
   },
   "devDependencies": {
     "tslint": "^5.16.0",
-    "typescript": "^3.4.3",
-    "semantic-release": "^15.13.3"
+    "typescript": "^3.4.3"
   },
   "peerDependencies": {
     "react-native": "^0.59.5"
