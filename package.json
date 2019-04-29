@@ -1,6 +1,6 @@
 {
   "name": "@yyyyu/react-native-geetest-sensebot",
-  "version": "2.1.0",
+  "version": "0.0.0-development",
   "description": "geetest sensebot for react native.",
   "keywords": [
     "react-native",
@@ -22,15 +22,17 @@
     "url": "https://github.com/yyyyu/react-native-geetest-sensebot.git"
   },
   "scripts": {
+    "lint": "tslint --fix ./src/**/*.ts",
     "build": "tsc",
-    "lint": "tslint --fix ./src/**/*.ts"
+    "semantic-release": "semantic-release --no-ci"
   },
   "dependencies": {
     "@types/react-native": "^0.57.45"
   },
   "devDependencies": {
     "tslint": "^5.16.0",
-    "typescript": "^3.4.3"
+    "typescript": "^3.4.3",
+    "semantic-release": "^15.13.3"
   },
   "peerDependencies": {
     "react-native": "^0.59.5"
