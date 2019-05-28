@@ -1,6 +1,6 @@
 # react-native-geetest-sensebot
 
-[GEETEST极验行为验证](https://docs.geetest.com/install/overview/start/) [![npm version](https://badge.fury.io/js/%40yyyyu%2Freact-native-geetest-sensebot.svg)](https://www.npmjs.com/package/@yyyyu/react-native-geetest-sensebot)
+[GEETEST极验行为验证](https://docs.geetest.com/install/overview/start/) [![npm version](https://badge.fury.io/js/%40yyyyu%2Freact-native-geetest-sensebot.svg)](https://www.npmjs.com/package/@yyyyu/react-native-geetest-sensebot) [![Build Status](https://travis-ci.org/yyyyu/react-native-geetest-sensebot.svg?branch=master)](https://travis-ci.org/yyyyu/react-native-geetest-sensebot)
 
 **SDK Version**
 iOS: v0.11.7_20190314
