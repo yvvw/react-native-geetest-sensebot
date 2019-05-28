@@ -19,8 +19,8 @@ typedef NS_ENUM(NSInteger, RNLGSError) {
     RNLGSParameterParseError = -1,
 };
 
-static NSNumber* RNLGSGetErrorCode(RNLGSError event) {
-    return [NSNumber numberWithInteger:event];
+static NSNumber* RNLGSGetErrorCode(RNLGSError error) {
+    return [NSNumber numberWithInteger:error];
 }
 
 @interface RNLGeetestSensebot () <GT3CaptchaManagerDelegate, GT3CaptchaManagerViewDelegate>
