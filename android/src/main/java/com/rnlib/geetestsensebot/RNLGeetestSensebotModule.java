@@ -47,9 +47,6 @@ public class RNLGeetestSensebotModule extends ReactContextBaseJavaModule impleme
     public void start(final ReadableMap option) {
         GT3ConfigBean gt3ConfigBean = getSharedGT3ConfigBean();
         try {
-            // debug
-            boolean debug = option.getBoolean("debug");
-            gt3ConfigBean.setDebug(debug);
             // view load timeout
             int timeout = option.getInt("loadTimeout");
             gt3ConfigBean.setTimeout(timeout);

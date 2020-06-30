@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  极验定义的错误类型
  */
 typedef NS_ENUM(NSUInteger, GT3ErrorType) {
+    /** 未知错误类型 */
+    GT3ErrorTypeUnknown = 0,
     /** 用户中断验证导致 */
     GT3ErrorTypeUser,
     /** 服务端返回错误 */
@@ -26,8 +28,8 @@ typedef NS_ENUM(NSUInteger, GT3ErrorType) {
     GT3ErrorTypeJavaScript,
     /** 内部解码错误类型 */
     GT3ErrorTypeDecode,
-    /** 未知错误类型 */
-    GT3ErrorTypeUnknown
+    /** 外部错误类型 */
+    GT3ErrorTypeExtern
 };
 
 /**

@@ -16,7 +16,8 @@ android {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation files('libs/geetest_sensebot_android_v4.0.7_20190311.aar')
+    implementation('com.geetest.android:sensebot:4.1.8@aar')
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
 }
 
 def safeExtGet(prop, fallback) {

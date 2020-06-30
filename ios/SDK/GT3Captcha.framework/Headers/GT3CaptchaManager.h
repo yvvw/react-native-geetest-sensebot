@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GT3AsyncTaskProtocol.h"
 #import "GT3Utils.h"
 #import "GT3Error.h"
 
@@ -46,11 +47,6 @@
 
 #pragma mark 基本方法
 
-/** 验证单例 */
-+ (instancetype)sharedGTManagerWithAPI1:(NSString *)api_1
-                                   API2:(NSString *)api_2
-                                timeout:(NSTimeInterval)timeout;
-
 /**
  *  @abstract 验证初始化方法
  *
@@ -84,16 +80,16 @@
  *  @discussion
  *  从后端sdk获取的验证参数, 其中单个challenge只能使用在同一次验证会话中
  *
- *  @param gt_public_key    在官网申请的captcha_id
+ *  @param gt_id            在官网申请的captcha_id
  *  @param gt_challenge     根据极验服务器sdk生成的challenge
  *  @param gt_success_code  网站主服务器监测geetest服务的可用状态 0/1 不可用/可用
  *  @param api_2            用于二次验证的接口.网站主根据极验服务端sdk来部署.
  *
  */
-- (void)configureGTest:(NSString *)gt_public_key
+- (void)configureGTest:(NSString *)gt_id
              challenge:(NSString *)gt_challenge
                success:(NSNumber *)gt_success_code
-              withAPI2:(NSString *)api_2;
+              withAPI2:(NSString *)api_2 API_DEPRECATED_WITH_REPLACEMENT("registerCaptchaWithCustomAsyncTask:completion:", ios(2.0, 6.0));
 
 /**
  *
@@ -102,6 +98,22 @@
  *  @param completionHandler 注册成功后的回调
  */
 - (void)registerCaptcha:(GT3CaptchaDefaultBlock)completionHandler;
+
+/**
+ *
+ *  @abstract 注册验证，并且自定义 API1 及 API2 流程
+ *
+ *  @param customAsyncTask 自定义 API1 及 API2 任务对象
+ *  @param completionHandler 注册成功后的回调
+ *
+ *  @discussion
+ *  因管理器内部以弱引用方式持有 customAsyncTask，需要开发者自己
+ *  在调用类中保持，以保证管理器在后续流程中能正常访问到该对象。
+ *
+ *  @seealso GT3AsyncTaskProtocol
+ *
+ */
+- (void)registerCaptchaWithCustomAsyncTask:(id<GT3AsyncTaskProtocol>)customAsyncTask completion:(GT3CaptchaDefaultBlock)completionHandler;
 
 /**
  *  ❗️<b>必要方法</b>❗️
@@ -154,6 +166,23 @@
 - (void)useGTViewWithTimeout:(NSTimeInterval)timeout;
 
 /**
+*  @abstract 设置图形验证的圆角大小
+*
+*  @param cornerRadius 圆角大小, 大小不超过 30 px
+*/
+- (void)useGTViewWithCornerRadius:(CGFloat)cornerRadius;
+
+/**
+ *  @abstract 验证静态参数
+ *
+ *  @discussion
+ *  内部将参数转换成表单格式，并拼接到静态资源的请求上
+ *
+ *  @param params 自定义参数
+ */
+- (void)useGTViewWithParams:(NSDictionary *)params;
+
+/**
  *  @abstract 验证标题
  *
  *  @discussion
@@ -190,11 +219,32 @@
  *  @abstract 切换验证语言
  *
  *  @discussion
- *  默认中文
+ *  默认跟随系统语言。不支持的语言则显示为英文。
  *
  *  @param type 语言类型
  */
 - (void)useLanguage:(GT3LanguageType)type;
+
+/**
+ *  @abstract 切换验证语言
+ *
+ *  @discussion
+ *  未设置或传 nil，默认跟随系统语言。不支持的语言则使用英文。
+ *
+ *  @param lang 语言简码。请参考相关的语言简码列表。
+ */
+- (void)useLanguageCode:(NSString *)lang;
+
+/**
+ *  @abstract 切换验证服务集群节点
+ *
+ *  @discussion
+ *  默认中国节点。使用其他节点需要使用相应的配置，否则无法正确访问验证服务。
+ *  使用该方法前，请充分了解极验的服务集群节点。
+ *
+ *  @param node 集群节点
+ */
+- (void)useServiceNode:(GT3CaptchaServiceNode)node;
 
 /**
  *  @abstract 完全使用HTTPS协议请求验证
@@ -232,6 +282,20 @@
  *  @param enable YES开启,NO关闭
  */
 - (void)enableDebugMode:(BOOL)enable;
+
+/**
+ * @abstract 设置是否允许打印日志
+ *
+ * @param enabled YES，允许打印日志 NO，禁止打印日志
+ */
++ (void)setLogEnabled:(BOOL)enabled;
+
+/**
+ * @abstract 是否允许打印日志
+ *
+ * @return YES，允许打印日志 NO，禁止打印日志
+ */
++ (BOOL)isLogEnabled;
 
 @end
 

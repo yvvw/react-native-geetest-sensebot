@@ -19,3 +19,6 @@ FOUNDATION_EXPORT const unsigned char GT3CaptchaVersionString[];
 #import <GT3Captcha/GT3Utils.h>
 #import <GT3Captcha/GT3Error.h>
 
+#import <GT3Captcha/GT3AsyncTaskProtocol.h>
+#import <GT3Captcha/GT3Parameter.h>
+
