@@ -107,6 +107,11 @@ public class RNLGeetestSensebotModule extends ReactContextBaseJavaModule impleme
 
             mGT3ConfigBean.setListener(new GT3Listener() {
                 @Override
+                public void onReceiveCaptchaCode(int i) {
+
+                }
+
+                @Override
                 public void onDialogResult(String s) {
                     super.onDialogResult(s);
                     sendEvent(Event.Result.getCode(), s);
